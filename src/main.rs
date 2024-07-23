@@ -16,6 +16,10 @@ struct Cli {
     #[arg(long, default_value_t = false)]
     verbose: bool,
 
+    /// Start replay immediately and exit after playing once
+    #[arg(long, default_value_t = false)]
+    autostart: bool,
+
     /// Replay events starting at this timestamp (in milliseconds)
     #[arg(long, default_value_t = 0)]
     start_time: u64,
@@ -319,14 +323,16 @@ fn hid_replay() -> Result<()> {
     let mut pos = 0i8;
     let mut direction = 1i8;
     loop {
-        print!("Hit enter to start replaying the events");
-        std::io::stdout().flush().unwrap();
-        let mut buffer = String::new();
-        std::io::stdin().read_line(&mut buffer)?;
-        // we need some loop condition, otherwise rust detects the
-        // loop can never enter and throws away our uhid device. weird.
-        if buffer.trim() == "quit" {
-            break;
+        if !cli.autostart {
+            print!("Hit enter to start replaying the events");
+            std::io::stdout().flush().unwrap();
+            let mut buffer = String::new();
+            std::io::stdin().read_line(&mut buffer)?;
+            // we need some loop condition, otherwise rust detects the
+            // loop can never enter and throws away our uhid device. weird.
+            if buffer.trim() == "quit" {
+                break;
+            }
         }
         let start_time = Instant::now();
         for e in &recording.events {
@@ -354,6 +360,9 @@ fn hid_replay() -> Result<()> {
         }
         print!("\r{:50}\r", " ");
         std::io::stdout().flush().unwrap();
+        if cli.autostart {
+            break;
+        }
     }
 
     Ok(())
