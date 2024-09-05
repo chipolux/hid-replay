@@ -11,6 +11,6 @@ description = "HID device emulation utility"
 anyhow = "1.0.82"
 clap = { version = "4.5.4", features = ["derive"] }
 hex = "0.4.3"
-uhid-virt = "0.0.7"
+uhid-virt = { git = "https://github.com/chipolux/uhid-virt.git" }
 glob = "0.3.1"
 nix = "0.28.0"
