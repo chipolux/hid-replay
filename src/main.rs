@@ -20,6 +20,10 @@ struct Cli {
     #[arg(long, default_value_t = false)]
     autostart: bool,
 
+    /// Exit after playing once
+    #[arg(long, default_value_t = false)]
+    playonce: bool,
+
     /// Replay events starting at this timestamp (in milliseconds)
     #[arg(long, default_value_t = 0)]
     start_time: u64,
@@ -360,7 +364,7 @@ fn hid_replay() -> Result<()> {
         }
         print!("\r{:50}\r", " ");
         std::io::stdout().flush().unwrap();
-        if cli.autostart {
+        if cli.autostart || cli.playonce {
             break;
         }
     }
