@@ -328,14 +328,17 @@ fn hid_replay() -> Result<()> {
     let mut direction = 1i8;
     loop {
         if !cli.autostart {
-            print!("Hit enter to start replaying the events");
+            print!("Type play or quit to continue!");
             std::io::stdout().flush().unwrap();
             let mut buffer = String::new();
             std::io::stdin().read_line(&mut buffer)?;
             // we need some loop condition, otherwise rust detects the
             // loop can never enter and throws away our uhid device. weird.
-            if buffer.trim() == "quit" {
+            if buffer.trim().to_lowercase() == "quit" {
                 break;
+            }
+            if buffer.trim().to_lowercase() != "play" {
+                continue;
             }
         }
         let start_time = Instant::now();
