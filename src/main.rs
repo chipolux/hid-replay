@@ -20,6 +20,10 @@ struct Cli {
     #[arg(long, default_value_t = false)]
     autostart: bool,
 
+    /// Start replay immediately and loop it forever
+    #[arg(long, default_value_t = false)]
+    autoloop: bool,
+
     /// Exit after playing once
     #[arg(long, default_value_t = false)]
     playonce: bool,
@@ -327,7 +331,7 @@ fn hid_replay() -> Result<()> {
     let mut pos = 0i8;
     let mut direction = 1i8;
     loop {
-        if !cli.autostart {
+        if !(cli.autostart || cli.autoloop) {
             print!("Type play or quit to continue!");
             std::io::stdout().flush().unwrap();
             let mut buffer = String::new();
