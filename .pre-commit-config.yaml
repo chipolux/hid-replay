@@ -1,9 +1,9 @@
 ci:
-    skip: [fmt, cargo-check]
+    skip: [fmt, cargo-check, clippy]
 
 repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v4.6.0
+  rev: v5.0.0
   hooks:
   - id: end-of-file-fixer
   - id: trailing-whitespace
@@ -12,8 +12,9 @@ repos:
   hooks:
   - id: fmt
   - id: cargo-check
+  - id: clippy
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.5.4
+  rev: v0.8.0
   hooks:
     - id: ruff
       args: ['--ignore=E741,E501']
